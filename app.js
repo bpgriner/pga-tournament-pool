@@ -20,33 +20,19 @@
  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
  */
 
-var http = require('http');
+var rest = require('restler'),
+    jquery = require('jquery');
 
-// To reduce dependencies, hijacked this straight from
-// Marak's color.js module
-// https://github.com/Marak/colors.js/blob/master/colors.js
+rest.get('http://www.majorschampionships.com/masters/2012/scoring/').on('complete', function(result){
+ 
+    var scores = result;
 
-var httpOptions = {
-    'host': 'majorschampionships.com',
-    'port': 80,
-    'path': '/masters/2012/scoring/'
-};
+    var tbl = $('table#myTable tr').map(function() {
+            return $(this).find('td').map(function() {
+              return $(this).html();
+            }).get();
+          }).get();
 
-http.get(httpOptions, function(res) {
 
-    res.on('data',function(data) {
 
-        console.log(res);
-
-        //console.log(data);
-
-        //var json = JSON.parse(data);
-    });
-
-    res.on('error',function(data) {
-        console.log('Could not get update!');
-    });
-
-}).on('error', function(e) {
-        console.log('Could not get update!');
-    });
+});
