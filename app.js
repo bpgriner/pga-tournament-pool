@@ -21,7 +21,8 @@
  */
 
 var rest = require('restler'),
-    jsdom = require('jsdom');
+    jsdom = require('jsdom'),
+    url = 'http://www.majorschampionships.com/masters/2012/scoring/';
 
 function call_jsdom(source, callback) {
     jsdom.env(
@@ -41,17 +42,24 @@ function call_jsdom(source, callback) {
 }
 
 // Start request
-rest.get('http://www.majorschampionships.com/masters/2012/scoring/').on('complete', function(result){
+rest.get(url).on('complete', function(result){
  
     call_jsdom(result, function (window) {
         var $ = window.$;
 
+        var i=0;
         // Now we can query with jQuery
+        var tbl = $('table.shadowboxTable_596 tbody tr').map(function() {
+            var player = {};
+                // Build player
+                player[i] = $(this).find('td').map(function() {
+                    return $(this).html();
+                }).get();
+                i++;
+            return player;
+          }).get();
 
-        var title = $("title").text();
-        $("h1").text(title);
-
-        console.log(title);
+        console.log(tbl);
     });
 
 });
