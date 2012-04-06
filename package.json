@@ -1,0 +1,12 @@
+{
+    "name": "masters-pool",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "express": "2.5.0",
+        "ejs": "0.6.1",
+        "stylus": "0.22.0",
+        "mocha": "0.3.6",
+        "jade": "0.22.0"
+    }
+}
