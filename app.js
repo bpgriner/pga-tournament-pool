@@ -21,18 +21,41 @@
  */
 
 var rest = require('restler'),
-    jquery = require('jquery');
+    jsdom = require('jsdom');
 
+function call_jsdom(source, callback) {
+    jsdom.env(
+        source,
+        [ 'jquery.min.js' ],
+        function(errors, window) {
+            process.nextTick(
+                function () {
+                    if (errors) {
+                        throw new Error("There were errors: "+errors);
+                    }
+                    callback(window);
+                }
+            );
+        }
+    );
+}
+
+// Start request
 rest.get('http://www.majorschampionships.com/masters/2012/scoring/').on('complete', function(result){
  
-    var scores = result;
+    call_jsdom(result, function (window) {
+        var $ = window.$;
 
-    var tbl = $('table#myTable tr').map(function() {
-            return $(this).find('td').map(function() {
-              return $(this).html();
-            }).get();
-          }).get();
+        // Now we can query with jQuery
 
+        var title = $("title").text();
+        $("h1").text(title);
 
+        console.log(title);
+    });
 
 });
+
+
+
+
