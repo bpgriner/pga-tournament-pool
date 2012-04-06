@@ -1,23 +1,6 @@
-/*var express = require('express'),
- gaas = require('./lib/gaas');
-
-
- // globals
- GLOBAL.conf = require('./gaas.conf').conf;
-
- var app = module.exports = express.createServer();
-
- var app = require('express').createServer();
-
- app.get('/', function(req, res){
- res.contentType('htm');
- console.log(app.settings);
- res.send(JSON.stringify(req.query),200);
- });
-
- app.listen(3000);
-
- console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+/**
+ * User: Ben Griner
+ * Start Date: 4/6/12
  */
 
 var rest = require('restler'),

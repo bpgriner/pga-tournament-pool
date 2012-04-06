@@ -1,6 +1,6 @@
 /**
  * User: Ben Griner
- * Start Date: 4/6/12, 2:07 PM
+ * Start Date: 4/6/12
  */
 
 var playerGroups = [
