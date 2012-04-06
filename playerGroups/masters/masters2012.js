@@ -3,7 +3,7 @@
  * Start Date: 4/6/12
  */
 
-var playerGroups = [
+var masters2012PlayerGroups = [
     {
         owner: 'Ben Griner',
         tieBreakerScore: '-11',
