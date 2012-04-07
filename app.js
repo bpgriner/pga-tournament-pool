@@ -3,6 +3,10 @@
  * Start Date: 4/6/12
  */
 
+// ** This code is currently specific to the Masters 2012 leaderboard on majorchampionships.com
+// TODO: If the HTML on majorchampionships.com is different for other tournaments, models for each of those
+// TODO (cont): tournaments need to be made.
+
 var rest = require('restler'),
     jsdom = require('jsdom'),
     url = 'http://www.majorschampionships.com/masters/2012/scoring/';
@@ -31,31 +35,41 @@ rest.get(url).on('complete', function(result){
     call_jsdom(result, function (window) {
         var $ = window.$;
 
-        var rows = [];
-        var secondTable = $('table.shadowboxTable_596 tbody:nth-child(4) tr').map(function() {
+        var rowsOfPlayers = []; // holds all players in the field
+        var fullLeaderBoard = $('table.shadowboxTable_596 tbody:nth-child(4) tr').map(function() {
             var player = $(this).find('td').map(function() {
                 return $(this).html();
             }).get();
-            rows.push(player);
+            rowsOfPlayers.push(player); // push HTML surrounding player's info into array
+
+            /*var playerName = $(this).find('a:nth-child(2)').map(function() {
+                return $(this).html();
+            }).get();
+            console.log('playerName = '+playerName);*/
         }).get();
-       
-       for(var i=0;i<rows.length;i++){
-            var playerInfo = rows[i];
+
+        //console.log(secondTable);
+
+        for(var i=0;i<rowsOfPlayers.length;i++){ // traverse through each HTML grouping that represents a player's stats
+            var playerInfo = rowsOfPlayers[i];
             var pos = String(playerInfo[0].substr(0,1));
+            //console.log("playerInfo = "+playerInfo);
+            //console.log('pos = '+pos);
+            //console.log('playerInfo[0] = '+playerInfo[0]);
             switch(pos) {
                 case "T":
-                    console.log("T");
+                    //console.log("T");
                     break;
                 case "C":
-                    console.log("C");
+                    //console.log("C");
                     break;
                 case "W":
-                    console.log("W");
+                    //console.log("W");
                     break;
                 default :
-                    console.log("-",pos,"-");
+                    //console.log("-",pos,"-");
             }
-       }
+        }
 
        // Current playerRow is...
 
