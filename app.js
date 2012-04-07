@@ -9,69 +9,25 @@
 
 var rest = require('restler'),
     jsdom = require('jsdom'),
+    express = require('express'),
+    scores = require('./scores'),
     url = 'http://www.majorschampionships.com/masters/2012/scoring/';
 
 
-function call_jsdom(source, callback) {
-    jsdom.env(
-        source,
-        [ 'jquery.min.js' ],
-        function(errors, window) {
-            process.nextTick(
-                function () {
-                    if (errors) {
-                        throw new Error("There were errors: "+errors);
-                    }
-                    callback(window);
-                }
-            );
-        }
-    );
-}
+var app = express.createServer();  
 
-function parse_out_player(playerInfo,pos){
-    player = {}
-    var headers = ['pos','pos1','name','total','thru','today','1','2','3','4','total'];
-    for(var i=0;i<playerInfo.length;i++){
-        player[headers[i]] = playerInfo[i];
-    }
-    player['pos1'] = String(player['pos1']).replace(/^\s+|\s+$/g, '');
-    player['name'] = String(player['name']).replace(/^\s+|\s+$/g, '');
+//var playersScores = scores.getPlayers();
 
-    return player;
-}
+console.log(scores.getPlayers());
 
-
-// Start request
-rest.get(url).on('complete', function(result){
-
-    call_jsdom(result, function (window) {
-        var $ = window.$;
-
-        var rowsOfPlayers = []; // holds all players in the field
-        var fullLeaderBoard = $('table.shadowboxTable_596 tbody:nth-child(4) tr').map(function() {
-            var player = $(this).find('td').map(function() {
-                return $(this).text();
-            }).get();
-            rowsOfPlayers.push(player); // push HTML surrounding player's info into array
-
-        }).get();
-
-
-        var playersSet=[];
-
-        for(var i=0;i<rowsOfPlayers.length;i++){ // traverse through each HTML grouping that represents a player's stats
-            var playerInfo = rowsOfPlayers[i];
-            var pos = String(playerInfo[0].substr(0,1));
-
-            if(pos == "T" || pos == "C" || pos == "W"){
-                playersSet.push(parse_out_player(playerInfo));
-            }
-        }
-        console.log(playersSet[0]);
-
-    });
-
+app.get('/', function(req, res){
+    res.contentType('htm');
+    //console.log(app.settings);
+    res.send(JSON.stringify({}),200);
 });
+
+app.listen(3000);
+
+//console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
 
