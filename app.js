@@ -31,32 +31,50 @@ rest.get(url).on('complete', function(result){
     call_jsdom(result, function (window) {
         var $ = window.$;
 
-        var i=0;
-        // Now we can query with jQuery
-        var tbl = $('table.shadowboxTable_596 tbody tr').map(function() {
-            var player = {};
-            // Build player
-            player[i] = $(this).find('td').map(function() {
+        var rows = [];
+        var secondTable = $('table.shadowboxTable_596 tbody:nth-child(4) tr').map(function() {
+            var player = $(this).find('td').map(function() {
                 return $(this).html();
             }).get();
-            i++;
-            return player;
+            rows.push(player);
         }).get();
+       
+       for(var i=0;i<rows.length;i++){
+            var playerInfo = rows[i];
+            var pos = String(playerInfo[0].substr(0,1));
+            switch(pos) {
+                case "T":
+                    console.log("T");
+                    break;
+                case "C":
+                    console.log("C");
+                    break;
+                case "W":
+                    console.log("W");
+                    break;
+                default :
+                    console.log("-",pos,"-");
+            }
+       }
 
-        //console.log(tbl);
+       // Current playerRow is...
 
-        // trying some other things here
-        var secondTable = $('table.shadowboxTable_596 tbody:nth-child(4)').map(function() {
+// [ 'T57',
+//     '\n                     <span style="color: rgb(0, 51, 153);">-</span>\n                  ',
+//     '\n                     <a href="javascript:void(0);" onclick="addRow(this.parentNode.parentNode.id, false)">\n                        <img class="imgAddRemove" name="add" src="http://i.cdn.turner.com/pgatour/cs/sites/cdnassets/events/template/2010/img/add.png" alt="">\n                     </a>\n                     <img class="flag" src="http://i.cdn.turner.com/pgatour/cs/sites/cdnassets/global/img/flags/ARG.gif" alt="ARG">\n                     <a href="/masters/2012/scoring/scorecards/index.cfm?id=20848">Angel Cabrera</a>\n                     <img style="margin-left: 10px;" src="http://i.cdn.turner.com/pgatour/.element/img/1.0/main/titleist_38x11.gif" alt="Titleist">\n                  ',
+//     '+5',
+//     '9:25 am ET',
+//     '-',
+//     '71',
+//     '78',
+//     '-',
+//     '-',
+//     '149' ],
 
-            var tableRow = $(this).find('tr').map(function() {
-                return $(this).html();
-            }).get();
-
-            return tableRow;
-
-        }).get();
-
-        console.log(secondTable);
+        
     });
 
 });
+
+
+
