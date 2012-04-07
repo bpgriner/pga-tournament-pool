@@ -29,6 +29,19 @@ function call_jsdom(source, callback) {
     );
 }
 
+function parse_out_player(playerInfo,pos){
+    player = {}
+    var headers = ['pos','pos1','name','total','thru','today','1','2','3','4','total'];
+    for(var i=0;i<playerInfo.length;i++){
+        player[headers[i]] = playerInfo[i];
+    }
+    player['pos1'] = String(player['pos1']).replace(/^\s+|\s+$/g, '');
+    player['name'] = String(player['name']).replace(/^\s+|\s+$/g, '');
+
+    return player;
+}
+
+
 // Start request
 rest.get(url).on('complete', function(result){
 
@@ -38,57 +51,27 @@ rest.get(url).on('complete', function(result){
         var rowsOfPlayers = []; // holds all players in the field
         var fullLeaderBoard = $('table.shadowboxTable_596 tbody:nth-child(4) tr').map(function() {
             var player = $(this).find('td').map(function() {
-                return $(this).html();
+                return $(this).text();
             }).get();
             rowsOfPlayers.push(player); // push HTML surrounding player's info into array
 
-            /*var playerName = $(this).find('a:nth-child(2)').map(function() {
-                return $(this).html();
-            }).get();
-            console.log('playerName = '+playerName);*/
         }).get();
 
-        //console.log(secondTable);
+
+        var playersSet=[];
 
         for(var i=0;i<rowsOfPlayers.length;i++){ // traverse through each HTML grouping that represents a player's stats
             var playerInfo = rowsOfPlayers[i];
             var pos = String(playerInfo[0].substr(0,1));
-            //console.log("playerInfo = "+playerInfo);
-            //console.log('pos = '+pos);
-            //console.log('playerInfo[0] = '+playerInfo[0]);
-            switch(pos) {
-                case "T":
-                    //console.log("T");
-                    break;
-                case "C":
-                    //console.log("C");
-                    break;
-                case "W":
-                    //console.log("W");
-                    break;
-                default :
-                    //console.log("-",pos,"-");
+
+            if(pos == "T" || pos == "C" || pos == "W"){
+                playersSet.push(parse_out_player(playerInfo));
             }
         }
+        console.log(playersSet[0]);
 
-       // Current playerRow is...
-
-// [ 'T57',
-//     '\n                     <span style="color: rgb(0, 51, 153);">-</span>\n                  ',
-//     '\n                     <a href="javascript:void(0);" onclick="addRow(this.parentNode.parentNode.id, false)">\n                        <img class="imgAddRemove" name="add" src="http://i.cdn.turner.com/pgatour/cs/sites/cdnassets/events/template/2010/img/add.png" alt="">\n                     </a>\n                     <img class="flag" src="http://i.cdn.turner.com/pgatour/cs/sites/cdnassets/global/img/flags/ARG.gif" alt="ARG">\n                     <a href="/masters/2012/scoring/scorecards/index.cfm?id=20848">Angel Cabrera</a>\n                     <img style="margin-left: 10px;" src="http://i.cdn.turner.com/pgatour/.element/img/1.0/main/titleist_38x11.gif" alt="Titleist">\n                  ',
-//     '+5',
-//     '9:25 am ET',
-//     '-',
-//     '71',
-//     '78',
-//     '-',
-//     '-',
-//     '149' ],
-
-        
     });
 
 });
-
 
 
