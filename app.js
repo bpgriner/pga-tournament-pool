@@ -18,13 +18,18 @@ var app = express.createServer();
 
 //var playersScores = scores.getPlayers();
 
-console.log(scores.getPlayers());
 
 app.get('/', function(req, res){
     res.contentType('htm');
-    //console.log(app.settings);
     res.send(JSON.stringify({}),200);
 });
+
+app.get('/reload', function(req, res){
+    res.contentType('htm');
+    scores.getPlayers();
+    res.send(JSON.stringify({}),200);
+});
+
 
 app.listen(3000);
 
