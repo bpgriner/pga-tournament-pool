@@ -1,14 +1,11 @@
 {
-    "name": "masters-pool",
-    "version": "0.0.1",
+    "name": "pga-tournament-pool",
+    "version": "0.0.2",
     "private": true,
     "dependencies": {
-        "express": "2.5.0",
-        "ejs": "0.6.1",
-        "stylus": "0.22.0",
-        "mocha": "0.3.6",
-        "jade": "0.22.0",
-        "restler": "2.0.0",
-        "jsdom" : "0.2.13"
+        "express": "4.0.0",
+        "jsdom": "0.10.5",
+        "hbs": "2.6.0",
+        "cron": "1.0.4"
     }
 }
